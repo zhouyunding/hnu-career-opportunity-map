@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="湖南大学、长沙及周边地区适合大一学生参与项目、比赛、社团和开源实践的机会地图">
+  <title>湖大 · 长沙项目机会地图</title>
+  <style>
+    :root {
+      --bg: #f3f6f4;
+      --surface: #ffffff;
+      --surface-soft: #eaf1ee;
+      --ink: #172321;
+      --muted: #65736f;
+      --line: #d9e3df;
+      --accent: #0c766b;
+      --accent-dark: #07564f;
+      --accent-soft: #d9eee9;
+      --warm: #c76139;
+      --warm-soft: #f9e7df;
+      --gold: #9c6d14;
+      --gold-soft: #f8efd8;
+      --blue: #32658a;
+      --blue-soft: #e5eff7;
+      --shadow: 0 12px 32px rgba(29, 57, 50, .08);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 32px;
+      color: #f6fbf9;
+      background: #12332f;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: #12332f;
+      background: #d7efe9;
+      border-radius: 7px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+    .brand-title { font-weight: 750; letter-spacing: .01em; }
+    .brand-subtitle { color: #b8d2cc; font-size: 12px; }
+    .verified {
+      flex: 0 0 auto;
+      color: #c5e5dc;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .app-shell {
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr);
+      min-height: calc(100vh - 68px);
+    }
+    .sidebar {
+      padding: 26px 18px;
+      background: #e8efec;
+      border-right: 1px solid var(--line);
+    }
+    .sidebar h2 {
+      margin: 0 0 4px;
+      font-size: 14px;
+      letter-spacing: .02em;
+    }
+    .sidebar-note {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .filter-group { margin-bottom: 26px; }
+    .filter-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #52625e;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .filter-list { display: grid; gap: 5px; }
+    .filter-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 10px;
+      color: #31433e;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      text-align: left;
+      transition: background .16s ease, border-color .16s ease, color .16s ease;
+    }
+    .filter-button:hover { background: rgba(255,255,255,.68); border-color: var(--line); }
+    .filter-button.active {
+      color: var(--accent-dark);
+      background: #fff;
+      border-color: #b9d9d1;
+      font-weight: 700;
+    }
+    .filter-count {
+      min-width: 24px;
+      padding: 1px 6px;
+      color: #667873;
+      background: #dce8e4;
+      border-radius: 12px;
+      font-size: 11px;
+      text-align: center;
+    }
+    .filter-button.active .filter-count { color: #fff; background: var(--accent); }
+    .side-links { display: grid; gap: 5px; }
+    .side-link {
+      padding: 8px 10px;
+      color: #52625e;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .side-link:hover { color: var(--accent-dark); background: rgba(255,255,255,.6); }
+
+    main { min-width: 0; padding: 30px clamp(18px, 4vw, 54px) 64px; }
+    .main-width { max-width: 1220px; margin: 0 auto; }
+    .intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.12;
+      letter-spacing: -.025em;
+    }
+    .intro-copy {
+      max-width: 680px;
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .focus-note {
+      flex: 0 0 210px;
+      padding: 14px;
+      color: #31504a;
+      background: var(--accent-soft);
+      border: 1px solid #c2e1d9;
+      border-radius: var(--radius);
+      font-size: 12px;
+    }
+    .focus-note strong { display: block; margin-bottom: 4px; color: var(--accent-dark); font-size: 14px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .stat {
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .stat-value { display: block; color: var(--accent-dark); font-size: 23px; font-weight: 800; line-height: 1.1; }
+    .stat-label { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0 18px;
+    }
+    .search-wrap { position: relative; flex: 1; }
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 13px;
+      color: #74837f;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .search {
+      width: 100%;
+      padding: 12px 14px 12px 38px;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      outline: none;
+    }
+    .search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(12,118,107,.13); }
+    .result-count { color: var(--muted); font-size: 13px; white-space: nowrap; }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 26px 0 11px;
+    }
+    .section-heading h2 { margin: 0; font-size: 19px; letter-spacing: -.01em; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 12px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 17px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 14px rgba(35,62,55,.035);
+    }
+    .card:hover { border-color: #afd0c7; box-shadow: var(--shadow); }
+    .card-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .card h3 { margin: 0; font-size: 17px; line-height: 1.35; }
+    .location { margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .status {
+      flex: 0 0 auto;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .status.now { color: #086b5e; background: var(--accent-soft); }
+    .status.watch { color: #835c10; background: var(--gold-soft); }
+    .status.closed { color: #8c452c; background: var(--warm-soft); }
+    .status.remote { color: #2b5c7d; background: var(--blue-soft); }
+    .card-summary { margin: 13px 0 14px; color: #465650; font-size: 13px; }
+    .card-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .meta-block { padding: 9px 10px; background: #f6f9f7; border-left: 3px solid #c9dfd8; }
+    .meta-label { display: block; margin-bottom: 2px; color: #71807b; font-size: 11px; }
+    .meta-value { color: #28413b; font-size: 12px; font-weight: 650; }
+    .fit { display: flex; align-items: center; gap: 8px; margin-bottom: 13px; }
+    .fit-label { color: var(--muted); font-size: 11px; white-space: nowrap; }
+    .meter { flex: 1; height: 5px; overflow: hidden; background: #e2ebe7; border-radius: 4px; }
+    .meter-fill { height: 100%; background: var(--accent); border-radius: inherit; }
+    .fit-score { color: var(--accent-dark); font-size: 12px; font-weight: 750; }
+    .action {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: auto;
+      padding-top: 12px;
+      color: #3f524c;
+      border-top: 1px solid #edf1ef;
+      font-size: 12px;
+    }
+    .action strong { color: var(--accent-dark); }
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 13px;
+    }
+    .source-links { display: flex; flex-wrap: wrap; gap: 5px; }
+    .source-chip {
+      padding: 2px 6px;
+      color: #49645c;
+      background: #eef4f1;
+      border: 1px solid #d7e5df;
+      border-radius: 4px;
+      font-size: 11px;
+      text-decoration: none;
+    }
+    .source-chip:hover { color: var(--accent-dark); border-color: #99c5b9; }
+    .open-link { color: var(--accent); font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .open-link:hover { text-decoration: underline; }
+    .empty {
+      padding: 34px 18px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px dashed #b7c9c2;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .lower-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      margin-top: 30px;
+    }
+    .panel {
+      padding: 19px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .panel h2 { margin: 0 0 14px; font-size: 18px; }
+    .timeline { display: grid; gap: 12px; }
+    .timeline-item { display: grid; grid-template-columns: 75px 1fr; gap: 12px; }
+    .timeline-time { color: var(--accent); font-size: 12px; font-weight: 800; }
+    .timeline-content { padding-bottom: 12px; border-bottom: 1px solid #edf1ef; font-size: 13px; }
+    .timeline-content:last-child { border-bottom: 0; }
+    .timeline-content strong { display: block; margin-bottom: 2px; }
+    .timeline-content span { color: var(--muted); }
+    .checklist { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .checklist li { display: grid; grid-template-columns: 21px 1fr; gap: 8px; color: #465650; font-size: 13px; }
+    .check { display: grid; place-items: center; width: 19px; height: 19px; color: var(--accent); border: 1px solid #9ec9be; border-radius: 4px; font-size: 12px; }
+
+    .contact-panel { margin-top: 14px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .contact-box { padding: 13px; background: #f6f9f7; border: 1px solid #e1ebe6; }
+    .contact-box h3 { margin: 0 0 7px; font-size: 14px; }
+    .contact-box p { margin: 0 0 9px; color: var(--muted); font-size: 12px; }
+    .template {
+      width: 100%;
+      min-height: 86px;
+      padding: 9px;
+      color: #40514b;
+      background: #fff;
+      border: 1px solid #dce7e2;
+      border-radius: 4px;
+      font-size: 12px;
+      line-height: 1.55;
+      resize: vertical;
+    }
+    .copy-button {
+      margin-top: 7px;
+      padding: 6px 9px;
+      color: var(--accent-dark);
+      background: var(--accent-soft);
+      border: 1px solid #b9ded4;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .copy-button:hover { background: #c8e8df; }
+
+    .sources { margin-top: 30px; }
+    .source-list { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 7px 20px; margin: 0; padding: 0; list-style: none; }
+    .source-list li { display: flex; align-items: baseline; gap: 7px; min-width: 0; color: var(--muted); font-size: 12px; }
+    .source-id { flex: 0 0 auto; color: var(--accent-dark); font-weight: 800; }
+    .source-list a { overflow: hidden; color: #5a7069; text-overflow: ellipsis; white-space: nowrap; }
+    .source-list a:hover { color: var(--accent); }
+    .method-note { margin: 14px 0 0; color: var(--muted); font-size: 12px; }
+    .footnote { margin-top: 20px; color: #7c8985; font-size: 11px; }
+
+    @media (max-width: 980px) {
+      .app-shell { grid-template-columns: 1fr; }
+      .sidebar { padding: 15px 18px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .sidebar h2, .sidebar-note { display: none; }
+      .filter-group { margin: 0; }
+      .filter-label { margin-bottom: 7px; }
+      .filter-list { display: flex; flex-wrap: wrap; }
+      .filter-button { width: auto; }
+      .side-links { display: none; }
+      main { padding-top: 24px; }
+    }
+    @media (max-width: 740px) {
+      .topbar { padding: 12px 16px; }
+      .brand-subtitle, .verified { display: none; }
+      .intro { display: block; }
+      .focus-note { margin-top: 16px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar { display: block; }
+      .result-count { display: block; margin-top: 8px; }
+      .cards, .lower-grid, .contact-grid, .source-list { grid-template-columns: 1fr; }
+      .card-meta { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">机</div>
+      <div>
+        <div class="brand-title">湖大 · 长沙项目机会地图</div>
+        <div class="brand-subtitle">为大一暑期实习准备的项目、导师、开源与比赛入口</div>
+      </div>
+    </div>
+    <div class="verified">资料核验：2026-10-27</div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <h2>筛选机会</h2>
+      <p class="sidebar-note">先看能否获得真实任务和反馈，再看比赛名次。</p>
+      <div class="filter-group">
+        <span class="filter-label">按入口</span>
+        <div class="filter-list">
+          <button class="filter-button active" data-filter="all">全部 <span class="filter-count" data-count="all">0</span></button>
+          <button class="filter-button" data-filter="now">现在联系 <span class="filter-count" data-count="now">0</span></button>
+          <button class="filter-button" data-filter="project">项目 / 导师 <span class="filter-count" data-count="project">0</span></button>
+          <button class="filter-button" data-filter="team">社团 / 比赛 <span class="filter-count" data-count="team">0</span></button>
+          <button class="filter-button" data-filter="remote">远程开源 <span class="filter-count" data-count="remote">0</span></button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">页面导航</span>
+        <nav class="side-links">
+          <a class="side-link" href="#plan">两周行动</a>
+          <a class="side-link" href="#contact">联系模板</a>
+          <a class="side-link" href="#sources">来源与核验</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main>
+      <div class="main-width">
+        <section class="intro">
+          <div>
+            <p class="eyebrow">Opportunity map / HNU + Changsha</p>
+            <h1>先找到能带你做小任务的人，再把项目做大。</h1>
+            <p class="intro-copy">这份地图围绕你的目标整理：做出一个拿得出手的后端 / Agent 工程项目，为大一暑期实习做准备。卡片中的“可直接联系”表示公开页面存在入口，不表示一定有名额；过期赛事保留是为了帮助你准备下一届。</p>
+          </div>
+          <aside class="focus-note">
+            <strong>当前建议</strong>
+            同时联系 2 个入口即可：一个偏软件测试 / AI，一个偏开源或学生团队。不要同时报名所有活动。
+          </aside>
+        </section>
+
+        <section class="stats" aria-label="机会统计">
+          <div class="stat"><span class="stat-value" data-stat="total">0</span><span class="stat-label">已整理入口</span></div>
+          <div class="stat"><span class="stat-value" data-stat="contact">0</span><span class="stat-label">现在值得联系</span></div>
+          <div class="stat"><span class="stat-value" data-stat="mentor">0</span><span class="stat-label">明确导师或指导机制</span></div>
+          <div class="stat"><span class="stat-value" data-stat="watch">0</span><span class="stat-label">下一周期关注</span></div>
+        </section>
+
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input class="search" id="search" type="search" placeholder="搜索：AI、测试、开源、比赛、长沙……" aria-label="搜索机会">
+          </div>
+          <div class="result-count" id="result-count">显示 0 个入口</div>
+        </div>
+
+        <section aria-labelledby="opportunity-title">
+          <div class="section-heading">
+            <h2 id="opportunity-title">机会列表</h2>
+            <p>优先级依据：任务真实性 × 指导可能性 × 与项目目标的相关度</p>
+          </div>
+          <div class="cards" id="cards">
+            <article class="card" data-tags="now project" data-keywords="张羽丰 程序分析 测试 AI4SE LLM 软件工程 可信AI 本科生 科研 后端">
+              <div class="card-top"><div><h3>张羽丰课题组：软件测试 / AI4SE</h3><div class="location">湖南大学计算机学院 · 校内</div></div><span class="status now">现在可咨询</span></div>
+              <p class="card-summary">教师主页明确写有“欢迎有兴趣的本科生加入课题组”，方向包括程序分析与测试、编译优化、智能化软件工程和可信 AI。与“工程质量、测试、Agent 可靠性”最贴近，适合把你的课伴项目做得更像工程作品。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">可能的切入任务</span><span class="meta-value">测试、脚本、复现实验、小工具</span></div><div class="meta-block"><span class="meta-label">公开联系方式</span><span class="meta-value">yufengzhang@hnu.edu.cn</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:84%"></span></span><span class="fit-score">4.2 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>发一封短邮件，附上 hello.py 或项目计划，询问能否从边界清楚的小任务开始。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-3">来源 [3]</a></div><a class="open-link" href="https://csee.hnu.edu.cn/people/zhangyufeng" target="_blank" rel="noopener">查看教师主页 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="now project team" data-keywords="陈浩文 OpenHarmony Robot工作坊 AI NLP 人工智能 深度学习 创新创业 竞赛 指导 湖大">
+              <div class="card-top"><div><h3>陈浩文老师：OpenHarmony 俱乐部 / Robot 工作坊</h3><div class="location">湖南大学计算机学院 · 校内</div></div><span class="status now">现在可咨询</span></div>
+              <p class="card-summary">教师主页显示其负责湖南大学开源鸿蒙高校俱乐部，并在校内组建 Robot 工作坊；研究方向覆盖人工智能、深度学习、自然语言处理和嵌入式系统，也有较多学生竞赛指导记录。适合询问是否有新手可参与的脚本、测试、AI 应用或小型工具任务。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">可能的切入任务</span><span class="meta-value">AI 应用、脚本、测试、社团项目</span></div><div class="meta-block"><span class="meta-label">公开联系方式</span><span class="meta-value">hwchen@hnu.edu.cn</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:78%"></span></span><span class="fit-score">3.9 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>询问俱乐部或工作坊是否接受大一旁听、每周小任务和阶段汇报，不直接承诺长期加入。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-13">来源 [13]</a><a class="source-chip" href="#source-6">[6]</a></div><a class="open-link" href="https://csee.hnu.edu.cn/people/chenhaowen" target="_blank" rel="noopener">查看教师主页 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="now project team remote" data-keywords="谢国琪 openEuler ZVM 嵌入式 操作系统 开源 实习 导师 Linux Zephyr">
+              <div class="card-top"><div><h3>湖南大学 openEuler 技术小组</h3><div class="location">湖南大学嵌入式实验室 · 长沙 / 开源</div></div><span class="status now">现在可咨询</span></div>
+              <p class="card-summary">openEuler 官方页面列出湖南大学技术小组、指导老师谢国琪教授和合作项目 ZVM。实验室页面还说明依托实验室成立了 openEuler 技术小组与开放原子开源学生社团。它不是后端 / Agent 的最短路径，但能接触真实开源协作、操作系统和工程项目。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">可能的切入任务</span><span class="meta-value">文档、测试、Linux / Zephyr 入门</span></div><div class="meta-block"><span class="meta-label">公开联系方式</span><span class="meta-value">xgqman@hnu.edu.cn</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:68%"></span></span><span class="fit-score">3.4 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>先询问是否有适合大一学生的开源入门任务，以及是否有学生负责人带你熟悉仓库和提交流程。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-14">来源 [14]</a><a class="source-chip" href="#source-16">[16]</a><a class="source-chip" href="#source-2">[2]</a></div><a class="open-link" href="https://www.openeuler.org/zh/universities" target="_blank" rel="noopener">查看小组页面 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="now team project" data-keywords="湖南大学 科技社团 CCF 开放原子 OpenHarmony 智能基座 Robot AIGC 创新创业 社团 纳新">
+              <div class="card-top"><div><h3>湖大科技社团：先问能否补入项目</h3><div class="location">湖南大学 · 校内团队入口</div></div><span class="status now">补入需确认</span></div>
+              <p class="card-summary">校团委 2026 科技社团支持计划列出 Robot 工作坊、AIGC 视觉创意社团、创新创业俱乐部、智能基座社团、OpenHarmony 技术俱乐部、CCF 湖南大学学生分会和开放原子开源学生社团等。集中纳新活动已在 10 月举行，但社团是否还能补入、是否有项目组，需要直接询问。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">优先询问</span><span class="meta-value">开放原子、CCF、智能基座、OpenHarmony</span></div><div class="meta-block"><span class="meta-label">要问清楚</span><span class="meta-value">当前项目、负责人、每周任务、反馈方式</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:82%"></span></span><span class="fit-score">4.1 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>通过班级群、学院通知或社团摊位留下的联系方式，询问“是否有新手项目组”，不要只问“还能不能进社团”。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-6">来源 [6]</a><a class="source-chip" href="#source-7">[7]</a></div><a class="open-link" href="https://youth.hnu.edu.cn/tzgg.htm" target="_blank" rel="noopener">查看团委通知 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="now project team" data-keywords="湖南大学 双创 学生创新创业中心 创客空间 金种子杯 导师 孵化 项目">
+              <div class="card-top"><div><h3>湖大双创中心 / 创客空间</h3><div class="location">湖南大学学生创新创业中心 · 校内</div></div><span class="status now">可询问入口</span></div>
+              <p class="card-summary">校团委页面介绍了工训中心创客空间、双创沙龙、创业大赛和一对一创业指导；这条路径更偏产品、团队和展示，不一定直接提供代码导师，但可以帮助你找到正在做软件项目的学长团队、比赛项目或企业导师。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">适合解决的问题</span><span class="meta-value">找队友、找项目、打磨展示</span></div><div class="meta-block"><span class="meta-label">联系入口</span><span class="meta-value">sczx@hnu.edu.cn · 0731-88822811</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:73%"></span></span><span class="fit-score">3.7 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>询问是否有人工智能、软件应用或信息技术方向的学生项目，能否旁听项目组例会或获得一次项目 review。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-19">来源 [19]</a></div><a class="open-link" href="https://youth.hnu.edu.cn/qngz/cxcy.htm" target="_blank" rel="noopener">查看创新创业页 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="project team watch" data-keywords="大创 大学生创新训练计划 湖南大学 人工智能 AI+ 导师 项目 申报 2027">
+              <div class="card-top"><div><h3>2027 湖大大学生创新训练计划（大创）</h3><div class="location">湖南大学 · 下一申报周期</div></div><span class="status watch">下一周期关注</span></div>
+              <p class="card-summary">2026 通知显示，大创项目由本科生在导师指导下完成创新训练、创业训练或创业实践；鼓励跨专业、跨年级组队，成员原则上不超过 5 人，学校重点培育方向包含“人工智能+”。2026 申报已经结束，2027 时间尚未在本次资料中公布。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">最适合的用法</span><span class="meta-value">把课伴升级成有导师的长期项目</span></div><div class="meta-block"><span class="meta-label">提前准备</span><span class="meta-value">问题定义、原型、队友、指导老师</span></div></div>
+              <div class="fit"><span class="fit-label">目标匹配度</span><span class="meter"><span class="meter-fill" style="width:91%"></span></span><span class="fit-score">4.6 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>现在先做出项目最小原型并联系老师；2027 春季关注学院教学秘书和双创中心通知，不等到报名截止才找导师。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-8">来源 [8]</a></div><a class="open-link" href="https://sczx.hnu.edu.cn/info/1053/3835.htm" target="_blank" rel="noopener">查看 2026 通知 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="remote now project" data-keywords="openEuler 开源实习 线上实习 导师 任务 积分 证明 工资 Git Linux">
+              <div class="card-top"><div><h3>openEuler 开源实习</h3><div class="location">全国远程 · openEuler 社区</div></div><span class="status remote">常年入口</span></div>
+              <p class="card-summary">官方页面写明面向全国年满 18 周岁的在校大学生，无专业和年级限制；流程包括申请、领取任务、提交成果，社区提供导师辅导。申请前需要完成测试任务；6 个月内满 60 积分、找到导师写评语并提交报告，才对应实习证明。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">你的门槛</span><span class="meta-value">确认已满 18 岁，补 Git / Linux 基础</span></div><div class="meta-block"><span class="meta-label">先做什么</span><span class="meta-value">查看测试任务和低风险文档 / 测试任务</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:62%"></span></span><span class="fit-score">3.1 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>先不要为了“实习”直接报名；先把 hello.py、Git 和一个小项目仓库做出来，再判断能否完成测试任务。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-15">来源 [15]</a><a class="source-chip" href="#source-14">[14]</a></div><a class="open-link" href="https://www.openeuler.org/zh/internship/" target="_blank" rel="noopener">查看实习规则 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="remote project watch" data-keywords="开源之夏 OSPP 开源 社区 导师 PR 项目申请 2026 2027">
+              <div class="card-top"><div><h3>开源之夏（OSPP）</h3><div class="location">全国远程 · 开源项目</div></div><span class="status remote">年度项目</span></div>
+              <p class="card-summary">开源之夏由中国科学院软件研究所发起，学生可以选择开源项目，与社区导师沟通并完成开发；通过结项可获得证书和劳务报酬。官方指南要求年满 18 岁、保持在校状态，一名学生同一时间最多申请一个项目。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">适合的准备路径</span><span class="meta-value">先读仓库、提 issue、做小 PR</span></div><div class="meta-block"><span class="meta-label">注意</span><span class="meta-value">申请书和项目匹配比“想参加”更重要</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:55%"></span></span><span class="fit-score">2.8 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>先把课伴做到能运行并学会 Git，再浏览项目列表；不要把第一次参与选成超出基础的操作系统核心任务。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-17">来源 [17]</a></div><a class="open-link" href="https://summer-ospp.ac.cn" target="_blank" rel="noopener">查看官方入口 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="team watch project" data-keywords="湖南大学 程序设计竞赛 ACM 校队 暑期培训 算法 C++ Python 初级班">
+              <div class="card-top"><div><h3>湖大程序设计竞赛 / ACM 校队</h3><div class="location">湖南大学 · 算法与队友</div></div><span class="status watch">下一周期关注</span></div>
+              <p class="card-summary">湖大程序设计竞赛会选拔优胜者申请加入 ACM/ICPC 队伍；过往暑期培训设置过初级班，面向没有参加过程序设计竞赛但有兴趣和潜力的学生。它不是你的主项目入口，却能补 C++、算法、压力下调试和团队协作。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">能补的能力</span><span class="meta-value">算法、读题、调试、协作</span></div><div class="meta-block"><span class="meta-label">与课伴的关系</span><span class="meta-value">补基础，不替代后端项目</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:65%"></span></span><span class="fit-score">3.3 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>保持 C++ 算法主线；下次通知出现后先报初级培训，不要因为项目开发而完全放弃算法。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-9">来源 [9]</a><a class="source-chip" href="#source-10">[10]</a></div><a class="open-link" href="https://sczx.hnu.edu.cn/info/1053/3811.htm" target="_blank" rel="noopener">查看竞赛样例 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="team project watch" data-keywords="中国大学生计算机设计大赛 软件应用开发 人工智能应用 湖南大学 作品 指导老师 团队">
+              <div class="card-top"><div><h3>中国大学生计算机设计大赛</h3><div class="location">湖南大学校内选拔 · 项目型比赛</div></div><span class="status watch">下一周期关注</span></div>
+              <p class="card-summary">湖大往年初选包含软件应用与开发、人工智能应用等类别，要求 2–5 人组队并可设 1–2 名指导教师。它比单纯算法赛更适合把“课伴”打磨成作品，但需要在报名前找到队友和指导老师，不能临时拼一个演示。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">最适合的作品</span><span class="meta-value">可演示的应用 + 文档 + 答辩材料</span></div><div class="meta-block"><span class="meta-label">提前准备</span><span class="meta-value">可运行原型、用户故事、分工</span></div></div>
+              <div class="fit"><span class="fit-label">目标匹配度</span><span class="meter"><span class="meter-fill" style="width:89%"></span></span><span class="fit-score">4.5 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>把它作为 2027 年作品展示目标；现在先完成课伴的检索 API 和测试，再找 1–2 名互补队友。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-11">来源 [11]</a></div><a class="open-link" href="https://sczx.hnu.edu.cn/info/1053/3625.htm" target="_blank" rel="noopener">查看往年初选 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="team project closed" data-keywords="先导杯 智能计算创新设计赛 系统能力 湖南大学 中科曙光 算力 培训 2026">
+              <div class="card-top"><div><h3>先导杯：智能计算创新设计赛</h3><div class="location">湖南大学 · 系统与 AI 竞赛</div></div><span class="status closed">2026 已截止</span></div>
+              <p class="card-summary">2026 湖大校赛允许 1–5 人组队，学校提供算力资源和评测环境并安排技术培训，优秀队伍可争取代表学校参加全国赛。报名截止为 2026 年 10 月 15 日，本届对你来说已不适合作为当前入口，但可以观察赛题和下一年通知。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">适合阶段</span><span class="meta-value">有 Python / AI / 系统基础之后</span></div><div class="meta-block"><span class="meta-label">本届群号</span><span class="meta-value">314031075（只供已报名团队核实）</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:44%"></span></span><span class="fit-score">2.2 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>不追赶本届；先做课伴基础闭环，明年再看题目是否与 Agent / 后端能力匹配。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-12">来源 [12]</a></div><a class="open-link" href="https://csee.hnu.edu.cn/info/1062/14223.htm" target="_blank" rel="noopener">查看赛事通知 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="team now" data-keywords="openEuler Developer Day 长沙 Meetup 开源 线下 活动 社区 专家 网络">
+              <div class="card-top"><div><h3>长沙 openEuler / 开源开发者活动</h3><div class="location">长沙 · 线下技术交流</div></div><span class="status watch">关注下一场</span></div>
+              <p class="card-summary">openEuler 年度活动页把“开源实习”列为全年项目，并列出长沙 openEuler Developer Day 等开发者活动。2026 长沙 Developer Day 已于 4 月举办，当前价值主要是关注下一场活动、认识社区贡献者和了解真实项目，不应把参加会议等同于获得项目。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">你能获得什么</span><span class="meta-value">认识维护者、听技术分享、找项目入口</span></div><div class="meta-block"><span class="meta-label">不能替代什么</span><span class="meta-value">不能替代代码提交和持续任务</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:60%"></span></span><span class="fit-score">3.0 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>活动前准备一个具体问题和项目链接；活动后只跟进 1–2 个真实仓库，不广泛加群。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-22">来源 [22]</a><a class="source-chip" href="#source-23">[23]</a></div><a class="open-link" href="https://www.openeuler.org/zh/interaction/event-list/" target="_blank" rel="noopener">查看活动规划 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="team watch" data-keywords="湘潭大学 智能感知 先进计算 创新创业 教育中心 本科生 导师 竞赛 周边城市">
+              <div class="card-top"><div><h3>湘潭大学智能感知与先进计算中心</h3><div class="location">湘潭 · 周边参考</div></div><span class="status closed">跨校资格待确认</span></div>
+              <p class="card-summary">湘潭大学中心公开介绍了本科生导师制、13 名导师、40 余名学生，并提供科研、学科竞赛和创新创业项目培养。这是周边城市里较完整的本科生培养案例，但页面写的是欢迎湘潭大学学生，不能假定湖大学生可以直接加入。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">可借鉴之处</span><span class="meta-value">导师制、学生梯队、项目制培养</span></div><div class="meta-block"><span class="meta-label">关键限制</span><span class="meta-value">跨校参与、交通和名额均未确认</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:28%"></span></span><span class="fit-score">1.4 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>不把它列为主路径；若有公开竞赛或交流活动，再询问是否接受跨校旁听或联合组队。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-18">来源 [18]</a></div><a class="open-link" href="https://cxyj.xtu.edu.cn/sysjj.htm" target="_blank" rel="noopener">查看中心介绍 ↗</a></div>
+            </article>
+
+            <article class="card" data-tags="project team watch" data-keywords="湖南大学 计算机学院 实验室 研究机构 方向 筛选 导师">
+              <div class="card-top"><div><h3>湖大计算机学院实验室目录</h3><div class="location">湖南大学 · 广泛筛选入口</div></div><span class="status watch">按方向筛选</span></div>
+              <p class="card-summary">学院官网列有多个研究机构和实验室。目录只能证明相关研究入口存在，不能证明正在招募大一学生；你应该先按“软件工程、AI、系统、数据”筛选，再查看教师主页，最后发一封有具体问题的邮件。</p>
+              <div class="card-meta"><div class="meta-block"><span class="meta-label">筛选关键词</span><span class="meta-value">AI 应用、软件测试、系统、数据</span></div><div class="meta-block"><span class="meta-label">联系原则</span><span class="meta-value">小任务 + 反馈频率 + 时间要求</span></div></div>
+              <div class="fit"><span class="fit-label">当前适合度</span><span class="meter"><span class="meter-fill" style="width:70%"></span></span><span class="fit-score">3.5 / 5</span></div>
+              <div class="action"><strong>建议动作</strong><span>每次只挑 1–2 位老师，先读主页和代表项目，再发送定制化邮件；不要群发同一段话。</span></div>
+              <div class="card-footer"><div class="source-links"><a class="source-chip" href="#source-1">来源 [1]</a></div><a class="open-link" href="https://csee.hnu.edu.cn/jgsz/yjjg.htm" target="_blank" rel="noopener">查看实验室目录 ↗</a></div>
+            </article>
+          </div>
+          <div class="empty" id="empty" hidden>没有匹配的入口。换一个关键词，或点击“全部”。</div>
+        </section>
+
+        <div class="lower-grid" id="plan">
+          <section class="panel">
+            <h2>接下来两周怎么做</h2>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-time">第 1–2 天</div><div class="timeline-content"><strong>完成第一课</strong><span>运行并修改 `D:\桌面\课伴\hello.py`，记录 Python / Git 版本和完整输出。</span></div></div>
+              <div class="timeline-item"><div class="timeline-time">第 3–5 天</div><div class="timeline-content"><strong>联系 2 个入口</strong><span>优先发给张羽丰课题组，以及陈浩文老师或 openEuler 小组；每封信只问一个清楚的入门问题。</span></div></div>
+              <div class="timeline-item"><div class="timeline-time">第 1 周末</div><div class="timeline-content"><strong>做出一个可展示的小进展</strong><span>把课伴项目写成 5 行需求，保留一个能运行的 Python 版本，不急着安装大模型。</span></div></div>
+              <div class="timeline-item"><div class="timeline-time">第 2 周</div><div class="timeline-content"><strong>决定一条外部路径</strong><span>收到回复后，只选择一个社团 / 课题组 / 开源仓库作为当前反馈入口，避免同时铺开。</span></div></div>
+            </div>
+          </section>
+          <section class="panel">
+            <h2>判断一个机会值不值得</h2>
+            <ul class="checklist">
+              <li><span class="check">1</span><span>第一周具体做什么，能否写成任务描述？</span></li>
+              <li><span class="check">2</span><span>谁回答问题，多久 review 一次？</span></li>
+              <li><span class="check">3</span><span>有没有仓库、Issue、测试或可验证交付物？</span></li>
+              <li><span class="check">4</span><span>每周时间、展示权限和退出条件是否明确？</span></li>
+              <li><span class="check">5</span><span>是否只是培训、拉新、客服或重复搬运？</span></li>
+            </ul>
+          </section>
+        </div>
+
+        <section class="panel contact-panel" id="contact">
+          <h2>联系模板</h2>
+          <div class="contact-grid">
+            <div class="contact-box">
+              <h3>联系老师 / 课题组</h3>
+              <p>把〔〕里的内容替换掉；先附小练习或项目计划，不要声称自己已经会 Agent。</p>
+              <textarea class="template" id="teacher-template" readonly>主题：咨询大一本科生参与入门项目/科研的可能性
+
+老师您好，我是湖南大学计算机专业大一学生，正在从 Python、Git 和后端基础开始学习，希望为大一暑期实习准备一个自己能讲清楚的工程项目。我计划做课程资料检索与引用助手，目前还在入门阶段，每周能稳定投入约〔填写小时数〕。请问课题组近期是否有适合新手参与的小任务，例如测试、脚本、复现实验或小型工具？我愿意按要求汇报，并接受 review。项目计划/代码练习：〔填写链接；暂无可先说明〕。谢谢。</textarea>
+              <button class="copy-button" data-copy="teacher-template">复制模板</button>
+            </div>
+            <div class="contact-box">
+              <h3>联系社团 / 学长团队</h3>
+              <p>重点问“有没有正在做的项目组”，不要只问“还能不能进社团”。</p>
+              <textarea class="template" id="club-template" readonly>学长/负责人您好，我是湖南大学计算机专业大一学生，正在从 Python、Git 和后端基础开始学习，准备做一个课程资料检索与引用助手。想请问团队目前是否有适合新手参与的项目或小任务？我可以先从测试、脚本、文档或资料整理开始，每周投入约〔填写小时数〕，并按要求汇报。请问目前由谁负责指导、多久反馈一次？谢谢。</textarea>
+              <button class="copy-button" data-copy="club-template">复制模板</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel sources" id="sources">
+          <h2>来源与核验</h2>
+          <p class="method-note">优先使用学校、学院、团委和开源社区官方页面。状态按 2026-10-27 整理；“现在可咨询”只表示公开入口存在，不表示已经获得名额。报名日期、年龄、跨校资格和导师安排，联系前仍需向组织方确认。</p>
+          <ol class="source-list">
+            <li id="source-1"><span class="source-id">[1]</span><a href="https://csee.hnu.edu.cn/jgsz/yjjg.htm" target="_blank" rel="noopener">湖南大学计算机学院：研究机构目录</a></li>
+            <li id="source-2"><span class="source-id">[2]</span><a href="https://esnl.hnu.edu.cn/labinfo.htm" target="_blank" rel="noopener">湖南大学嵌入式与网络计算重点实验室简介</a></li>
+            <li id="source-3"><span class="source-id">[3]</span><a href="https://csee.hnu.edu.cn/people/zhangyufeng" target="_blank" rel="noopener">张羽丰教师主页：本科生科研、程序分析与测试、AI4SE</a></li>
+            <li id="source-6"><span class="source-id">[6]</span><a href="https://youth.hnu.edu.cn/info/1013/1492.htm" target="_blank" rel="noopener">湖南大学 2026 青少年科技社团支持计划</a></li>
+            <li id="source-7"><span class="source-id">[7]</span><a href="https://youth.hnu.edu.cn/info/1013/1516.htm" target="_blank" rel="noopener">湖南大学 2026 学生社团纳新通知</a></li>
+            <li id="source-8"><span class="source-id">[8]</span><a href="https://sczx.hnu.edu.cn/info/1053/3835.htm" target="_blank" rel="noopener">湖南大学 2026 大学生创新训练计划申报通知</a></li>
+            <li id="source-9"><span class="source-id">[9]</span><a href="https://sczx.hnu.edu.cn/info/1053/3811.htm" target="_blank" rel="noopener">湖南大学第二十二届程序设计竞赛通知</a></li>
+            <li id="source-10"><span class="source-id">[10]</span><a href="https://sczx.hnu.edu.cn/info/1053/3709.htm" target="_blank" rel="noopener">湖南大学 2025 程序设计竞赛暑期培训通知</a></li>
+            <li id="source-11"><span class="source-id">[11]</span><a href="https://sczx.hnu.edu.cn/info/1053/3625.htm" target="_blank" rel="noopener">2025 中国大学生计算机设计大赛湖南大学初选通知</a></li>
+            <li id="source-12"><span class="source-id">[12]</span><a href="https://csee.hnu.edu.cn/info/1062/14223.htm" target="_blank" rel="noopener">2026 先导杯智能计算创新设计赛湖大校赛</a></li>
+            <li id="source-13"><span class="source-id">[13]</span><a href="https://csee.hnu.edu.cn/people/chenhaowen" target="_blank" rel="noopener">陈浩文教师主页：OpenHarmony 俱乐部、Robot 工作坊</a></li>
+            <li id="source-14"><span class="source-id">[14]</span><a href="https://www.openeuler.org/zh/universities" target="_blank" rel="noopener">openEuler 高校技术小组：湖南大学</a></li>
+            <li id="source-15"><span class="source-id">[15]</span><a href="https://www.openeuler.org/zh/internship/" target="_blank" rel="noopener">openEuler 开源实习规则与申请流程</a></li>
+            <li id="source-16"><span class="source-id">[16]</span><a href="https://csee.hnu.edu.cn/people/xieguoqi" target="_blank" rel="noopener">谢国琪教师主页：嵌入式与开源项目</a></li>
+            <li id="source-17"><span class="source-id">[17]</span><a href="https://blog2026.summer-ospp.ac.cn/help/student%20guide" target="_blank" rel="noopener">开源之夏 2026 学生指南</a></li>
+            <li id="source-18"><span class="source-id">[18]</span><a href="https://cxyj.xtu.edu.cn/sysjj.htm" target="_blank" rel="noopener">湘潭大学智能感知与先进计算创新创业教育中心</a></li>
+            <li id="source-19"><span class="source-id">[19]</span><a href="https://youth.hnu.edu.cn/qngz/cxcy.htm" target="_blank" rel="noopener">湖南大学团委：创新创业体系</a></li>
+            <li id="source-22"><span class="source-id">[22]</span><a href="https://www.openeuler.org/zh/interaction/event-list/" target="_blank" rel="noopener">openEuler 2026 开发者活动年度规划</a></li>
+            <li id="source-23"><span class="source-id">[23]</span><a href="https://www.openeuler.org/zh/news/20260425-openEuler%20Developer%20Day%202026/20260425-openEuler%20Developer%20Day%202026" target="_blank" rel="noopener">openEuler Developer Day 2026 长沙活动回顾</a></li>
+          </ol>
+          <p class="footnote">本页没有把无法在官方页面核实的商业培训、微信群或泛泛的黑客松写成机会。加入任何团队前，先确认任务、指导、时间、费用、成果署名和退出条件。</p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const cards = [...document.querySelectorAll('.card')];
+      const buttons = [...document.querySelectorAll('[data-filter]')];
+      const search = document.querySelector('#search');
+      const resultCount = document.querySelector('#result-count');
+      const empty = document.querySelector('#empty');
+      let activeFilter = 'all';
+
+      const matches = (card) => {
+        const tags = card.dataset.tags.split(/\s+/);
+        const query = search.value.trim().toLowerCase();
+        const text = card.textContent.toLowerCase() + ' ' + card.dataset.keywords.toLowerCase();
+        return (activeFilter === 'all' || tags.includes(activeFilter)) && (!query || text.includes(query));
+      };
+
+      const render = () => {
+        let visible = 0;
+        cards.forEach(card => {
+          const show = matches(card);
+          card.hidden = !show;
+          if (show) visible += 1;
+        });
+        resultCount.textContent = `显示 ${visible} 个入口`;
+        empty.hidden = visible !== 0;
+        ['all', 'now', 'project', 'team', 'remote'].forEach(filter => {
+          const count = cards.filter(card => filter === 'all' || card.dataset.tags.split(/\s+/).includes(filter)).length;
+          const target = document.querySelector(`[data-count="${filter}"]`);
+          if (target) target.textContent = count;
+        });
+      };
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          activeFilter = button.dataset.filter;
+          buttons.forEach(item => item.classList.toggle('active', item === button));
+          render();
+        });
+      });
+      search.addEventListener('input', render);
+
+      document.querySelector('[data-stat="total"]').textContent = cards.length;
+      document.querySelector('[data-stat="contact"]').textContent = cards.filter(card => card.dataset.tags.includes('now')).length;
+      document.querySelector('[data-stat="mentor"]').textContent = 7;
+      document.querySelector('[data-stat="watch"]').textContent = cards.filter(card => card.dataset.tags.includes('watch')).length;
+
+      document.querySelectorAll('[data-copy]').forEach(button => {
+        button.addEventListener('click', async () => {
+          const textarea = document.getElementById(button.dataset.copy);
+          try {
+            await navigator.clipboard.writeText(textarea.value);
+          } catch (error) {
+            textarea.focus();
+            textarea.select();
+            document.execCommand('copy');
+          }
+          const original = button.textContent;
+          button.textContent = '已复制';
+          setTimeout(() => { button.textContent = original; }, 1200);
+        });
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
+
+<template id="citation-index">
+## Sources
+
+[1] https://csee.hnu.edu.cn/jgsz/yjjg.htm
+[2] https://esnl.hnu.edu.cn/labinfo.htm
+[3] https://csee.hnu.edu.cn/people/zhangyufeng
+[6] https://youth.hnu.edu.cn/info/1013/1492.htm
+[7] https://youth.hnu.edu.cn/info/1013/1516.htm
+[8] https://sczx.hnu.edu.cn/info/1053/3835.htm
+[9] https://sczx.hnu.edu.cn/info/1053/3811.htm
+[10] https://sczx.hnu.edu.cn/info/1053/3709.htm
+[11] https://sczx.hnu.edu.cn/info/1053/3625.htm
+[12] https://csee.hnu.edu.cn/info/1062/14223.htm
+[13] https://csee.hnu.edu.cn/people/chenhaowen
+[14] https://www.openeuler.org/zh/universities
+[15] https://www.openeuler.org/zh/internship
+[16] https://csee.hnu.edu.cn/people/xieguoqi
+[17] https://blog2026.summer-ospp.ac.cn/help/student%20guide
+[18] https://cxyj.xtu.edu.cn/sysjj.htm
+[19] https://youth.hnu.edu.cn/qngz/cxcy.htm
+[22] https://www.openeuler.org/zh/interaction/event-list
+[23] https://www.openeuler.org/zh/news/20260425-openEuler%20Developer%20Day%202026/20260425-openEuler%20Developer%20Day%202026
+</template>
