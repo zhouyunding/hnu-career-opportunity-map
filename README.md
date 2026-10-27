@@ -4,7 +4,11 @@
 
 ## 在线页面
 
-GitHub Pages 部署完成后，将在此处补充公开网址。
+https://zhouyunding.github.io/hnu-career-opportunity-map/
+
+源码仓库：
+
+https://github.com/zhouyunding/hnu-career-opportunity-map
 
 ## 更新原则
 
